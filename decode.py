@@ -7,6 +7,15 @@ def decode_audio(input_path):
     # Load the audio file
     wav, sr = torchaudio.load(input_path)
     
+    # Ensure correct shape (batch, channels, samples)
+    if wav.dim() == 2:  # If stereo, convert to mono
+        wav = wav.mean(dim=0, keepdim=True)
+    if wav.dim() == 1:  # If mono without channel dimension
+        wav = wav.unsqueeze(0)
+    wav = wav.unsqueeze(0)  # Add batch dimension
+    
+    print(f"Audio shape: {wav.shape}")  # Should be (1, 1, samples)
+    
     # Load the detector model
     detector = AudioSeal.load_detector("audioseal_detector_16bits")
     
