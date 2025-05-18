@@ -1,0 +1,27 @@
+name: audio-marking
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - pytorch>=1.13.0
+  - torchaudio
+  - numpy
+  - omegaconf
+  - pip
+  - pip:
+    - julius
+    - audioseal
+    - soundfile
+    - librosa
+    - scipy
+    - tqdm
+    - matplotlib
+    - pandas
+    - seaborn
+    - transformers
+    - datasets
+    - evaluate
+    - accelerate
+    - wandb 
