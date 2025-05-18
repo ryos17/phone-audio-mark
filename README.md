@@ -1,6 +1,6 @@
 # Audio Marking Project
 
-This repository contains code for audio watermarking experiments using AudioSeal and AudioMarkBench.
+This repository contains code for audio watermarking experiments for CS224S final project (partnering with Sanas.ai)
 
 ## Setup
 
@@ -24,6 +24,7 @@ conda activate audio-marking
 - `README.md`: This file
 - `encode.py`: Script to add watermark to audio files
 - `decode.py`: Script to detect watermark in audio files
+- `utils/spectogram.py`: Script to generate and save spectrograms of audio files
 
 ## Usage
 
@@ -39,6 +40,11 @@ Optional: Add a 16-bit message to the watermark:
 python encode.py --input_path path/to/audio.wav --message "1010101010101010"
 ```
 
+Optional: Specify custom output path:
+```bash
+python encode.py --input_path path/to/audio.wav --output_path path/to/output.wav
+```
+
 ### Detecting Watermark
 
 To detect watermark in an audio file:
@@ -50,12 +56,28 @@ The script will output:
 - Watermark probability (float number)
 - Message (16-bit binary vector if watermarked)
 
+### Generating Spectrograms
+
+To generate spectrograms for one or more audio files:
+```bash
+python utils/spectogram.py path/to/audio1.wav path/to/audio2.wav
+```
+
+The script will:
+- Create a `spectogram_files` directory if it doesn't exist
+- Generate spectrograms for each input audio file
+- Save spectrograms as PNG files with the same name as the input files
+- Print information about each processed file
+
 ## Dependencies
 
 The project uses the following main dependencies:
 - AudioSeal
 - AudioMarkBench
 - PyTorch
+- torchaudio
+- matplotlib
+- numpy
 - Other ML and audio processing libraries
 
 See `environment.yml` for the complete list of dependencies.
