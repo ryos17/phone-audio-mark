@@ -3,14 +3,14 @@
 This repository contains code for audio watermarking experiments for CS224S final project (partnering with Sanas.ai)
 
 ## TODO
-Ryota:
+1. Training:
 - figure out training with custom dataset (https://github.com/facebookresearch/audioseal/blob/main/docs/TRAINING.md)
 - will have to use dora, and other tools, might be difficult formating the dataset to AudioCraft datasets
 - once that is figured out, make a script to downsample to 8khz and train
 - audiocraft dataset (https://github.com/facebookresearch/audiocraft/blob/main/docs/DATASETS.md)
 - dora documentation (https://github.com/facebookresearch/dora)
 
-Rushank:
+2. Evaluation:
 - figure out audiobenchmark evals
 
 ## Setup
