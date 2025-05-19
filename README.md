@@ -1,20 +1,46 @@
-# Audio Marking Project
+# Phone Quality Audio Watermarking
 
 This repository contains code for audio watermarking experiments for CS224S final project (partnering with Sanas.ai)
 
+## TODO
+Ryota:
+- figure out training with custom dataset (https://github.com/facebookresearch/audioseal/blob/main/docs/TRAINING.md)
+- will have to use dora, and other tools, might be difficult formating the dataset to AudioCraft datasets
+- once that is figured out, make a script to downsample to 8khz and train
+- audiocraft dataset (https://github.com/facebookresearch/audiocraft/blob/main/docs/DATASETS.md)
+- dora documentation (https://github.com/facebookresearch/dora)
+
+Rushank:
+- figure out audiobenchmark evals
+
 ## Setup
 
-1. Install Conda if you haven't already:
+1. **Install Conda if you haven't already:**
 ```bash
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 ```
 
-2. Create and activate the conda environment:
+2. **Create and activate the conda environment:**
 ```bash
 conda env create -f environment.yml
 conda activate audio-marking
+```
+
+### If you are training model...
+
+3. **Install FFmpeg (required by AudioCraft):**
+```bash
+conda install "ffmpeg<5" -c conda-forge
+```
+
+4. **Clone AudioCraft repository (for AudioSeal training):**
+```bash
+git clone https://github.com/facebookresearch/audiocraft.git
+cd audiocraft
+pip install -e .
+cd ..
 ```
 
 ## Project Structure
@@ -22,8 +48,9 @@ conda activate audio-marking
 - `environment.yml`: Conda environment configuration
 - `.gitignore`: Git ignore rules
 - `README.md`: This file
-- `encode.py`: Script to add watermark to audio files
-- `decode.py`: Script to detect watermark in audio files
+- `utils/dataset.py`: Script to download and validate gigaspeech dataset
+- `utils/encode.py`: Script to add watermark to audio files
+- `utils/decode.py`: Script to detect watermark in audio files
 - `utils/spectogram.py`: Script to generate and save spectrograms of audio files
 
 ## Usage
@@ -32,24 +59,24 @@ conda activate audio-marking
 
 To add a watermark to an audio file:
 ```bash
-python encode.py --input_path path/to/audio.wav --sample_rate 16000
+python utils/encode.py --input_path path/to/audio.wav --sample_rate 16000
 ```
 
 Optional: Add a 16-bit message to the watermark:
 ```bash
-python encode.py --input_path path/to/audio.wav --message "1010101010101010"
+python utils/encode.py --input_path path/to/audio.wav --message "1010101010101010"
 ```
 
 Optional: Specify custom output path:
 ```bash
-python encode.py --input_path path/to/audio.wav --output_path path/to/output.wav
+python utils/encode.py --input_path path/to/audio.wav --output_path path/to/output.wav
 ```
 
 ### Detecting Watermark
 
 To detect watermark in an audio file:
 ```bash
-python decode.py path/to/audio.wav
+python utils/decode.py path/to/audio.wav
 ```
 
 The script will output:
@@ -69,15 +96,14 @@ The script will:
 - Save spectrograms as PNG files with the same name as the input files
 - Print information about each processed file
 
+### Working with Gigaspeech Dataset
+
+The `utils/dataset.py` script provides utilities for working with the Gigaspeech dataset. It will download and validate the dataset. Also gives 10 sample wav audio saved in `audio_files`:
+
+```bash
+python utils/dataset.py
+```
+
 ## Dependencies
 
-The project uses the following main dependencies:
-- AudioSeal
-- AudioMarkBench
-- PyTorch
-- torchaudio
-- matplotlib
-- numpy
-- Other ML and audio processing libraries
-
-See `environment.yml` for the complete list of dependencies.
+See `environment.yml`

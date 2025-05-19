@@ -21,15 +21,23 @@ print("\nDataset loaded successfully!")
 output_dir = "audio_files"
 os.makedirs(output_dir, exist_ok=True)
 
-# Get 10 random indices
-num_samples = len(gs["train"])
+# Get 10 random indices from test set
+num_samples = len(gs["test"])
 random_indices = random.sample(range(num_samples), 10)
+
+num_samples_train = len(gs["train"])
+num_samples_val = len(gs["validation"])
+num_samples_test = len(gs["test"])
+
+print(f"Number of training samples: {num_samples_train:,}")
+print(f"Number of validation samples: {num_samples_val:,}")
+print(f"Number of test samples: {num_samples_test:,}")
 
 print(f"\nSaving 10 random audio samples to {output_dir}/")
 for i, idx in enumerate(random_indices):
     # Get the audio sample
-    audio_input = gs["train"][idx]["audio"]
-    transcription = gs["train"][idx]["text"]
+    audio_input = gs["test"][idx]["audio"]
+    transcription = gs["test"][idx]["text"]
     
     # Save as WAV file
     output_path = os.path.join(output_dir, f"sample_{i+1}.wav")
@@ -41,6 +49,6 @@ for i, idx in enumerate(random_indices):
         f.write(transcription)
     
     print(f"Saved sample {i+1}: {output_path}")
-    print(f"Transcription: {transcription[:100]}...")  # Print first 100 chars of transcription
+    print(f"Transcription: {transcription}") 
 
 print("\nDone! All files have been saved.")
