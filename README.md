@@ -52,8 +52,22 @@ cd ..
 - `utils/encode.py`: Script to add watermark to audio files
 - `utils/decode.py`: Script to detect watermark in audio files
 - `utils/spectogram.py`: Script to generate and save spectrograms of audio files
+- `utils/analyze.py`: Script to check audio file metadata (sample rate, channels, duration, format)
 
 ## Usage
+
+### Analyzing Audio Files
+
+To check the metadata of an audio file (sample rate, channels, duration, and format):
+```bash
+python utils/analyze.py path/to/audio.wav
+```
+
+The script will display:
+- Sample rate in Hz
+- Number of channels
+- Duration in seconds
+- Audio file format
 
 ### Adding Watermark to Audio
 
