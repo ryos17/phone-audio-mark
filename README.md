@@ -118,6 +118,33 @@ The `utils/dataset.py` script provides utilities for working with the Gigaspeech
 python utils/dataset.py
 ```
 
+### Evaluation on AudioMarkBench
+
+Create virtual environment
+```bash
+conda create -n audiomarkbench python=3.10 -y
+conda activate audiomarkbench
+```
+
+Clone AudioMarkBench
+```bash
+git clone https://github.com/moyangkuo/AudioMarkBench/
+```
+
+Install requirements (skipping over uninstallable packages)
+```bash
+while IFS= read -r pkg; do                                               
+  echo "Installing $pkg…"
+  pip install "$pkg" || echo "  → Skipped $pkg"
+done < requirements.txt
+```
+
+To install ViSQOL
+```bash
+brew install bazel
+bazel build :visqol -c opt
+```
+
 ## Dependencies
 
 See `environment.yml`
