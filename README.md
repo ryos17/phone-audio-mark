@@ -12,6 +12,7 @@ This repository contains code for audio watermarking experiments for CS224S fina
 
 2. Evaluation:
 - figure out audiobenchmark evals
+- simulate "attacks" and see case by case how decoding gets affected
 
 ## Setup
 
