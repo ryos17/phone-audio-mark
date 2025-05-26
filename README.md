@@ -12,6 +12,7 @@ This repository contains code for audio watermarking experiments for CS224S fina
 
 2. Evaluation:
 - figure out audiobenchmark evals
+- simulate "attacks" and see case by case how decoding gets affected
 
 ## Setup
 
@@ -160,6 +161,33 @@ datasource:
 ### 3. Run Training
 ```bash
 dora run solver=watermark/robustness dset=audio/gigaspeech
+```
+
+## Evaluation
+
+Create virtual environment
+```bash
+conda create -n audiomarkbench python=3.10 -y
+conda activate audiomarkbench
+```
+
+Clone AudioMarkBench
+```bash
+git clone https://github.com/moyangkuo/AudioMarkBench/
+```
+
+Install requirements (skipping over uninstallable packages)
+```bash
+while IFS= read -r pkg; do                                               
+  echo "Installing $pkg…"
+  pip install "$pkg" || echo "  → Skipped $pkg"
+done < requirements.txt
+```
+
+To install ViSQOL
+```bash
+brew install bazel
+bazel build :visqol -c opt
 ```
 
 ## Dependencies
