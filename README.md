@@ -118,6 +118,50 @@ The `utils/dataset.py` script provides utilities for working with the Gigaspeech
 python utils/dataset.py
 ```
 
+## Training
+
+### 1. Preparing GigaSpeech Dataset for Training
+```bash
+python prepare.py --size xs --output audiocraft/gigaspeech
+```
+
+Options:
+- `--size`: Size of the GigaSpeech dataset ('xs', 's', 'm', 'l', 'xl')
+- `--output`: Name of the output JSONL file (without extension)
+
+The script will:
+- Load the GigaSpeech dataset from HuggingFace
+- Create a JSONL file in `audiocraft/gigaspeech/` directory
+- Format each entry with required AudioCraft fields:
+  - path: Path to audio file
+  - duration: Audio duration in seconds
+  - sample_rate: Sampling rate
+  - amplitude: null
+  - weight: null
+  - info_path: null
+
+### 2. Configure AudioCraft Training
+
+Create the following datasource definition in `[audiocraft root]/configs/dset/audio/gigaspeech.yaml`:
+
+```yaml
+# @package __global__
+
+datasource:
+  max_sample_rate: 16000
+  max_channels: 1
+
+  train: gigaspeech
+  valid: gigaspeech
+  evaluate: gigaspeech
+  generate: gigaspeech
+```
+
+### 3. Run Training
+```bash
+dora run solver=watermark/robustness dset=audio/gigaspeech
+```
+
 ## Dependencies
 
 See `environment.yml`

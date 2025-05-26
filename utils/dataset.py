@@ -17,6 +17,25 @@ gs = load_dataset(
 
 print("\nDataset loaded successfully!")
 
+# Print dataset format and structure
+print("\nDataset Format:")
+print("=" * 50)
+print("\nFeatures:")
+print(gs["train"].features)
+print("\nExample data structure:")
+print("=" * 50)
+example = gs["train"][0]
+for key, value in example.items():
+    if key == "audio":
+        print("\naudio:")
+        print("  - array shape:", value["array"].shape)
+        print("  - array dtype:", value["array"].dtype)
+        print("  - sampling_rate:", value["sampling_rate"])
+        print("  - path:", value["path"])
+        print("  - channels:", "stereo" if len(value["array"].shape) > 1 and value["array"].shape[1] == 2 else "mono")
+    else:
+        print(f"\n{key}:", value)
+
 # Create output directory if it doesn't exist
 output_dir = "audio_files"
 os.makedirs(output_dir, exist_ok=True)
@@ -29,6 +48,8 @@ num_samples_train = len(gs["train"])
 num_samples_val = len(gs["validation"])
 num_samples_test = len(gs["test"])
 
+print("\nDataset Statistics:")
+print("=" * 50)
 print(f"Number of training samples: {num_samples_train:,}")
 print(f"Number of validation samples: {num_samples_val:,}")
 print(f"Number of test samples: {num_samples_test:,}")
