@@ -163,6 +163,24 @@ datasource:
 dora run solver=watermark/robustness dset=audio/gigaspeech
 ```
 
+## Multi-GPU Training
+
+To train using multiple GPUs, use the following command:
+
+```bash
+torchrun \
+    --master-addr $(hostname -I | awk '{print $1}') \
+    --master-port 29500 \
+    --node_rank 0 \
+    --nnodes 1 \
+    --nproc-per-node 8 \  # Set to number of GPUs
+    -m dora run \
+    solver=watermark/robustness_8khz \
+    dset=audio/gigaspeech_8khz_xl_half
+```
+
+Adjust `--nproc-per-node` to match your number of available GPUs.
+
 ## Evaluation
 
 Create virtual environment
@@ -193,3 +211,49 @@ bazel build :visqol -c opt
 ## Dependencies
 
 See `environment.yml`
+
+
+
+
+## Running Inference with Custom Trained Model
+
+### 1. Prepare the Model
+
+First, clone the AudioSeal repository and install required dependencies:
+
+```bash
+git clone https://github.com/facebookresearch/audioseal.git
+pip install fire  # Required for checkpoint conversion
+```
+
+### 2. Convert Checkpoint
+
+Convert your trained model checkpoint to the inference format:
+
+```bash
+python audioseal/src/scripts/checkpoints.py \
+    --checkpoint=/path/to/checkpoint_50.th \
+    --outdir=model_outputs \
+    --suffix=model_name
+```
+
+### 3. Run Watermarking
+
+Use the converted model to add a watermark to an audio file:
+
+```bash
+python utils/encode.py \
+    --input_path path/to/input.wav \
+    --message "1010101010101010" \
+    --sample_rate 8000 \
+    --output_path output.wav \
+    --model_path model_outputs/checkpoint_generator_model_name.pth
+```
+
+### 4. Verify Watermark
+
+Check if the watermark was successfully embedded:
+
+```bash
+python utils/decode.py output.wav
+```

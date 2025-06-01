@@ -4,7 +4,7 @@ import torchaudio
 from audioseal import AudioSeal
 import os
 
-def encode_audio(input_path, sample_rate, message=None, output_path=None):
+def encode_audio(input_path, sample_rate, model_path, message=None, output_path=None):
     # Load the audio file
     wav, sr = torchaudio.load(input_path)
     
@@ -24,7 +24,7 @@ def encode_audio(input_path, sample_rate, message=None, output_path=None):
     print(f"Audio shape: {wav.shape}")  # Should be (1, 1, samples)
     
     # Load the watermarking model
-    model = AudioSeal.load_generator("audioseal_wm_16bits")
+    model = AudioSeal.load_generator(model_path, nbits=16)
     
     # Generate watermark with optional message
     if message is not None:
@@ -55,7 +55,9 @@ def main():
     parser.add_argument('--sample_rate', type=int, default=16000, help='Sample rate for model (default: 16000)')
     parser.add_argument('--message', type=str, help='16-bit binary message to embed (e.g., "1010101010101010")')
     parser.add_argument('--output_path', type=str, help='Path to save the watermarked audio file (default: input_path_encoded.wav)')
-    
+    parser.add_argument('--model_path', type=str, default="audioseal_wm_16bits", 
+                       help='Path to model checkpoint (default: "audioseal_wm_16bits")')
+
     args = parser.parse_args()
     
     # Validate message if provided
@@ -64,7 +66,7 @@ def main():
             print("Error: Message must be exactly 16 bits (0s and 1s)")
             return
     
-    encode_audio(args.input_path, args.sample_rate, args.message, args.output_path)
+    encode_audio(args.input_path, args.sample_rate, args.model_path, args.message, args.output_path)
 
 if __name__ == "__main__":
     main() 
