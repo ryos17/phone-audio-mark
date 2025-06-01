@@ -208,6 +208,11 @@ brew install bazel
 bazel build :visqol -c opt
 ```
 
+Export this variable to suppress downsampling warnings
+```bash
+export GLOG_minloglevel=2
+```
+
 ## Dependencies
 
 See `environment.yml`
