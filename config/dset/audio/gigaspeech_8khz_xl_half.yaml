@@ -1,0 +1,10 @@
+# @package __global__
+
+datasource:
+  max_sample_rate: 8000
+  max_channels: 1
+
+  train: gigaspeech_8khz_xl_half
+  valid: gigaspeech_8khz_xl_half
+  evaluate: gigaspeech_8khz_xl_half
+  generate: gigaspeech_8khz_xl_half

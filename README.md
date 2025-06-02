@@ -121,7 +121,18 @@ python utils/dataset.py
 
 ## Training
 
-### 1. Preparing GigaSpeech Dataset for Training
+### 1. Configure AudioCraft Training Parameters
+
+Replace `[audiocraft root]/configs` with our `config` folder. This contains the hyperparameters necessary for training in 8 kHz sampling rate.
+```bash
+# cd to phone-audio-mark root
+cd ..
+
+# copy config to audiocraft root
+cp -r config/* audiocraft/config/
+```
+
+### 2. Preparing GigaSpeech Dataset for Training
 ```bash
 python prepare.py --size xs --output audiocraft/gigaspeech
 ```
@@ -141,7 +152,7 @@ The script will:
   - weight: null
   - info_path: null
 
-### 2. Configure AudioCraft Training
+### 3. Configure AudioCraft Dataset Format
 
 Create the following datasource definition in `[audiocraft root]/configs/dset/audio/gigaspeech.yaml`:
 
@@ -158,25 +169,32 @@ datasource:
   generate: gigaspeech
 ```
 
-### 3. Run Training
+### 4. Configure Dora Path
+By default, checkpoints and inference files are saved in `/tmp/audiocraft_$USER/outputs`. However, to make our checkpoints more accessible, it is better to set custom path.
+
+Create the following config definition in `[audiocraft root]/my_config.yaml`:
+
+```yaml
+# File name: my_config.yaml
+
+default:
+  dora_dir: /root/phone-audio-mark/dora
+  partitions:
+    global: your_slurm_partitions
+    team: your_slurm_partitions
+  reference_dir: /root/phone-audio-mark/dora/reference
+```
+
+### 5. Run Training
 ```bash
-dora run solver=watermark/robustness dset=audio/gigaspeech
+AUDIOCRAFT_CONFIG=my_config.yaml dora run solver=watermark/robustness dset=audio/gigaspeech
 ```
 
 ## Multi-GPU Training
 
 To train using multiple GPUs, use the following command:
-
 ```bash
-torchrun \
-    --master-addr $(hostname -I | awk '{print $1}') \
-    --master-port 29500 \
-    --node_rank 0 \
-    --nnodes 1 \
-    --nproc-per-node 8 \  # Set to number of GPUs
-    -m dora run \
-    solver=watermark/robustness_8khz \
-    dset=audio/gigaspeech_8khz_xl_half
+    torchrun  --master-addr $(hostname -I | awk '{print $1}')     --master-port 29500   --node_rank 0  --nnodes 1     --nproc-per-node 8  -m dora run    solver=watermark/robustness    dset=audio/gigaspeech_8khz_xl_half
 ```
 
 Adjust `--nproc-per-node` to match your number of available GPUs.
@@ -212,13 +230,6 @@ Export this variable to suppress downsampling warnings
 ```bash
 export GLOG_minloglevel=2
 ```
-
-## Dependencies
-
-See `environment.yml`
-
-
-
 
 ## Running Inference with Custom Trained Model
 
