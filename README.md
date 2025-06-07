@@ -119,6 +119,45 @@ The `utils/dataset.py` script provides utilities for working with the Gigaspeech
 python utils/dataset.py
 ```
 
+### Generating Plots from Training History
+
+The `analyze_train.py` script helps visualize training metrics from the training history JSON file. It supports customizing the plot appearance and saving the output.
+
+#### Basic Usage
+
+```bash
+python utils/analyze_train.py <history_json> <metric_name> [options]
+```
+
+#### Example: Plotting Discriminator Loss
+
+```bash
+python utils/analyze_train.py dora/xps/a7a7d341/history.json d_loss \
+    --output output \
+    --name d_loss_a100 \
+    --title "Loss for A₁₀₀" \
+    --xlabel "Training Epochs" \
+    --ylabel "Discriminator Loss" \
+    --legend "Discriminator Loss"
+```
+
+#### Available Options
+
+- `--output`: Output directory (default: 'outputs')
+- `--name`: Output filename (without extension)
+- `--title`: Plot title
+- `--xlabel`: X-axis label
+- `--ylabel`: Y-axis label (defaults to metric name)
+- `--legend`: Legend labels (provide two space-separated values for train/val)
+- `--font-size`: Base font size (default: 12)
+
+#### Notes
+
+- The script automatically handles both training and validation metrics if available
+- For subscripts in titles, use Unicode characters (e.g., A₁₀₀)
+- Output is saved as a high-resolution PNG file (300 DPI)
+
+
 ## Training
 
 ### 1. Configure AudioCraft Training Parameters
@@ -197,7 +236,7 @@ To train using multiple GPUs, use the following command:
     torchrun  --master-addr $(hostname -I | awk '{print $1}')     --master-port 29500   --node_rank 0  --nnodes 1     --nproc-per-node 8  -m dora run    solver=watermark/robustness    dset=audio/gigaspeech_8khz_xl_half
 ```
 
-Adjust `--nproc-per-node` to match your number of available GPUs.
+Adjust `--nproc-per-node` to match your number of available GPUs. If you run into "opening too many files" errors, it is most likely the wandb artifacts so I recommend uninstalling wandb via `pip uninstall wandb`.
 
 ## Evaluation
 

@@ -38,7 +38,7 @@ tensorboard:
   name:  # optional name for the experiment
   sub_dir:  # optional sub directory to store tensorboard data
 wandb:
-  with_media_logging: true
+  with_media_logging: false
   project:  # project name
   name:  # optional name for the experiment
   group:  # optional group
