@@ -119,18 +119,18 @@ The `utils/dataset.py` script provides utilities for working with the Gigaspeech
 python utils/dataset.py
 ```
 
-### Generating Plots from Training History
+### Training Visualization Tools
 
-The `analyze_train.py` script helps visualize training metrics from the training history JSON file. It supports customizing the plot appearance and saving the output.
+#### 1. Single Run Analysis (`analyze_train.py`)
 
-#### Basic Usage
+Visualize metrics from a single training run.
 
+**Basic Usage:**
 ```bash
 python utils/analyze_train.py <history_json> <metric_name> [options]
 ```
 
-#### Example: Plotting Discriminator Loss
-
+**Example: Plotting Discriminator Loss**
 ```bash
 python utils/analyze_train.py dora/xps/a7a7d341/history.json d_loss \
     --output output \
@@ -138,18 +138,53 @@ python utils/analyze_train.py dora/xps/a7a7d341/history.json d_loss \
     --title "Loss for A₁₀₀" \
     --xlabel "Training Epochs" \
     --ylabel "Discriminator Loss" \
-    --legend "Discriminator Loss"
+    --font-size 14
 ```
 
-#### Available Options
-
+**Available Options:**
 - `--output`: Output directory (default: 'outputs')
 - `--name`: Output filename (without extension)
-- `--title`: Plot title
-- `--xlabel`: X-axis label
+- `--title`: Plot title (supports Unicode subscripts, e.g., A₁₀₀)
+- `--xlabel`: X-axis label (default: 'Epochs')
 - `--ylabel`: Y-axis label (defaults to metric name)
 - `--legend`: Legend labels (provide two space-separated values for train/val)
 - `--font-size`: Base font size (default: 12)
+
+#### 2. Multi-Run Comparison (`analyze_batch_train.py`)
+
+Compare the same metric across multiple training runs in a single plot.
+
+**Basic Usage:**
+```bash
+python utils/analyze_batch_train.py <history_json1> <history_json2> ... <metric_name> [options]
+```
+
+**Example: Comparing Discriminator Loss**
+```bash
+python utils/analyze_batch_train.py \
+    dora/xps/6a28e352/history.json \
+    dora/xps/a7a7d341/history.json \
+    dora/xps/0427d672/history.json \
+    d_loss \
+    --output output \
+    --name combined_d_loss \
+    --title "Discriminator Loss" \
+    --xlabel "Training Epochs" \
+    --ylabel "Loss" \
+    --legend "A₁₀" "A₁₀₀" "A₅₀₀₀" \
+    --font-size 14 \
+    --line-styles - - -
+```
+
+**Additional Options:**
+- `--line-styles`: Line styles for each run (e.g., `- -- -` for solid, dashed, dash-dot)
+- `--colors`: Custom colors for each run (hex codes)
+- Other options same as `analyze_train.py`
+
+**Notes:**
+- Use Unicode subscripts (e.g., A₁₀, A₁₀₀) for clean formatting in titles and legends
+- Default font is DeJavu Serif with Times New Roman fallback
+- Output is saved as high-resolution PNG (300 DPI)
 
 #### Notes
 

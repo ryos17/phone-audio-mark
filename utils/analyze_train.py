@@ -5,18 +5,20 @@ import os
 import matplotlib as mpl
 from pathlib import Path
 
-# Simple font settings without LaTeX
-plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['DejaVu Sans', 'Arial', 'Helvetica', 'sans-serif'],
-    'font.size': 10,
-    'axes.titlesize': 12,
-    'axes.labelsize': 10,
-    'xtick.labelsize': 9,
-    'ytick.labelsize': 9,
-    'legend.fontsize': 10,
-    'figure.titlesize': 12
-})
+# Font settings to match save_spectrograms
+BIGGER_SIZE = 10
+SMALLER_SIZE = 8
+
+plt.rc('font', size=BIGGER_SIZE, family='serif')  # controls default text sizes
+plt.rcParams['font.family'] = 'DeJavu Serif'
+plt.rcParams['font.serif'] = ['Times New Roman']
+
+plt.rc('axes', titlesize=BIGGER_SIZE)  # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGER_SIZE)  # fontsize of the x and y labels
+plt.rc('xtick', labelsize=BIGGER_SIZE)  # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALLER_SIZE)  # fontsize of the tick labels
+plt.rc('legend', fontsize=BIGGER_SIZE)  # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)
 
 # Set a better figure DPI for higher quality output
 mpl.rcParams['figure.dpi'] = 300
