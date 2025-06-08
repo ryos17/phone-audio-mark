@@ -335,7 +335,8 @@ touch visqol/__init__.py
 touch visqol/pb2/__init__.py
 ```
 
-#### Now, your folder structure should look like this:
+#### Finally, your folder structure should look like this:
+```md
 .
 ├── AudioMarkBench/
 └── └── no-box/
@@ -347,7 +348,7 @@ touch visqol/pb2/__init__.py
             ├── ├── __init__.py
             ├── ├── similarity_result_pb2.py
             └── └── visqol_config_pb2.py
-
+```
 
 ## Running Inference with Custom Trained Model
 
