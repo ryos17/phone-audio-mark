@@ -1,6 +1,6 @@
 # Phone Quality Audio Watermarking
 
-This repository contains code for audio watermarking experiments for CS224S final project. We will update the repository and README as needed so that our partners at Sanas can easily use our scripts and see final data, but all code for the class has been uploaded by the deadline.
+This repository contains code for audio watermarking experiments for CS224S final project. We will update the repository and README as needed so that our partner Sanas can easily use our scripts and see data, but all code for the class has been uploaded by the deadline.
 
 ## Setup
 
