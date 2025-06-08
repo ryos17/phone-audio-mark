@@ -2,18 +2,6 @@
 
 This repository contains code for audio watermarking experiments for CS224S final project (partnering with Sanas.ai)
 
-## TODO
-1. Training:
-- figure out training with custom dataset (https://github.com/facebookresearch/audioseal/blob/main/docs/TRAINING.md)
-- will have to use dora, and other tools, might be difficult formating the dataset to AudioCraft datasets
-- once that is figured out, make a script to downsample to 8khz and train
-- audiocraft dataset (https://github.com/facebookresearch/audiocraft/blob/main/docs/DATASETS.md)
-- dora documentation (https://github.com/facebookresearch/dora)
-
-2. Evaluation:
-- figure out audiobenchmark evals
-- simulate "attacks" and see case by case how decoding gets affected
-
 ## Setup
 
 1. **Install Conda if you haven't already:**
@@ -173,12 +161,14 @@ python utils/analyze_batch_train.py \
     --ylabel "Loss" \
     --legend "A₁₀" "A₁₀₀" "A₅₀₀₀" \
     --font-size 14 \
-    --line-styles - - -
+    --line-styles - - - \
+    --epoch-limits 125 125 50
 ```
 
 **Additional Options:**
 - `--line-styles`: Line styles for each run (e.g., `- -- -` for solid, dashed, dash-dot)
 - `--colors`: Custom colors for each run (hex codes)
+- `--epoch-limits`: Maximum epochs to plot for each run (e.g., `125 125 50` for 125 epochs for first two runs, 50 for third)
 - Other options same as `analyze_train.py`
 
 **Notes:**
@@ -191,6 +181,8 @@ python utils/analyze_batch_train.py \
 - The script automatically handles both training and validation metrics if available
 - For subscripts in titles, use Unicode characters (e.g., A₁₀₀)
 - Output is saved as a high-resolution PNG file (300 DPI)
+- Use `--epoch-limits` to compare models trained for different numbers of epochs
+- When using `--epoch-limits`, make sure the number of limits matches the number of input files
 
 
 ## Training
@@ -347,3 +339,8 @@ Check if the watermark was successfully embedded:
 ```bash
 python utils/decode.py output.wav
 ```
+
+## References
+- [AudioSeal Training Guide](https://github.com/facebookresearch/audioseal/blob/main/docs/TRAINING.md)
+- [AudioCraft Datasets](https://github.com/facebookresearch/audiocraft/blob/main/docs/DATASETS.md)
+- [Dora Documentation](https://github.com/facebookresearch/dora)

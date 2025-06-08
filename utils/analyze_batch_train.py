@@ -50,6 +50,8 @@ def parse_arguments():
     parser.add_argument('--colors', type=str, nargs='+', 
                       default=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'],
                       help='Colors for different runs')
+    parser.add_argument('--epoch-limits', type=int, nargs='+', default=None,
+                      help='Maximum epochs to plot for each model (one per input file)')
     return parser.parse_args()
 
 def load_history(json_path: str) -> List[Dict[str, Any]]:
@@ -71,7 +73,8 @@ def plot_metrics(
     ylabel: Optional[str] = None,
     font_size: int = 12,
     line_styles: Optional[List[str]] = None,
-    colors: Optional[List[str]] = None
+    colors: Optional[List[str]] = None,
+    epoch_limits: Optional[List[int]] = None
 ) -> None:
     """Plot the same metric from multiple training runs on the same axes."""
     # Set up the figure
@@ -106,21 +109,36 @@ def plot_metrics(
             print(f"Warning: Metric '{metric}' not found in training data for {label}")
             continue
         
+        # Apply epoch limit if specified
+        max_epoch = epoch_limits[i] if epoch_limits and i < len(epoch_limits) else None
+        
+        # Prepare training data
         epochs = range(1, len(train_metrics) + 1)
+        
+        # Apply epoch limit by taking first N elements
+        if max_epoch is not None:
+            plot_epochs = list(epochs)[:max_epoch]
+            plot_train = train_metrics[:max_epoch]
+            plot_val = val_metrics[:max_epoch] if val_metrics else []
+        else:
+            plot_epochs = list(epochs)
+            plot_train = train_metrics
+            plot_val = val_metrics if val_metrics else []
+        
         line_style = line_styles[i % len(line_styles)]
         color = colors[i % len(colors)]
         
         # Plot training data
-        plt.plot(epochs, train_metrics, 
+        plt.plot(plot_epochs, plot_train, 
                 linestyle=line_style, 
                 color=color,
                 linewidth=2,
                 label=f"{label}")
         
         # Plot validation data if available
-        if val_metrics and any(v is not None for v in val_metrics):
-            plt.plot(epochs[:len(val_metrics)], 
-                    [v for v in val_metrics if v is not None],
+        if plot_val and any(v is not None for v in plot_val):
+            plt.plot(plot_epochs[:len(plot_val)], 
+                    [v for v in plot_val if v is not None],
                     linestyle=line_style,
                     color=color,
                     linewidth=2,
@@ -129,7 +147,6 @@ def plot_metrics(
     
     # Format title with Unicode subscript for A_{100}
     title_text = title or f'Training and Validation {metric}'
-    title_text = title_text.replace('$A_{100}$', 'A₁₀₀')
     
     plt.title(title_text, fontsize=font_size+2, pad=20)
     plt.xlabel(xlabel, fontsize=font_size)
@@ -182,7 +199,8 @@ def main():
             ylabel=args.ylabel,
             font_size=args.font_size,
             line_styles=args.line_styles,
-            colors=args.colors
+            colors=args.colors,
+            epoch_limits=args.epoch_limits
         )
         
     except FileNotFoundError as e:
