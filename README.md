@@ -422,8 +422,7 @@ python nobox_audioseal_audiomarkdata.py \
 | `--save_pert`                  | store_true       | `False`       | If set, save each perturbed audio file to disk.                                                       |
 | `--resample_rate, -sr <int>`   | integer          | `16000`       | Target sample rate (Hz) for all audio I/O (e.g. use `8000` for phone-quality audio).                  |
 | `--model_prefix <str>`         | string           | `''`          | Prefix to tag model output files (e.g. experiment name or epoch identifier).                          |
-| `--common_perturbation <str>`  | string           | `''`          | Perturbation type to apply. Options: `time_stretch`, `gaussian_noise`, `background_noise`,            |
-|                                |                  |               | `quantization`, `soundstream`, `opus`, `encodec`, `lowpass`, `highpass`, `echo`, `mp3`, `smooth`.     |
+| `--common_perturbation <str>`  | string           | `''`          | Perturbation type to apply. Options: `time_stretch`, `gaussian_noise`, `background_noise`, `quantization`, `soundstream`, `opus`, `encodec`, `lowpass`, `highpass`, `echo`, `mp3`, `smooth`.     |
 | `--mp3_bitrates <ints>`        | list of integers | `[8, 16]`     | One or more MP3 bitrates (kbps) to try when `--common_perturbation mp3` is used.                      |
 | `--gpu <int>`                  | integer          | `0`           | CUDA GPU index to use (if you have a compatible GPU and CUDA installed).                              |
 | `--max_length <int>`           | integer          | `5*16000`     | Maximum audio length to load (in samples). Defaults to 5 seconds at 16 kHz.                           |
