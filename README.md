@@ -323,7 +323,7 @@ bazel build --action_env=PYTHON_BIN_PATH -c opt \
 pip install -e .
 ```
 
-#### To create the correct folder structure that AudioMarkBench expects
+#### To create the correct folder structure that AudioMarkBench expects:
 ```bash
 cd <location_of_audiomarkbench>/AudioMarkBench/no-box
 
@@ -334,6 +334,19 @@ cp -R ../../visqol/bazel-bin/python/visqol ./visqol
 touch visqol/__init__.py
 touch visqol/pb2/__init__.py
 ```
+
+#### Now, your folder structure should look like this:
+.
+├── AudioMarkBench/
+└── └── no-box/
+    ├── ├── nobox_audioseal_audiomarkdata.py
+    └── └── visqol/                    ← copied package/
+        ├── ├── __init__.py
+        ├── ├── visqol_lib_py.so       ← native extension
+        └── └── pb2/
+            ├── ├── __init__.py
+            ├── ├── similarity_result_pb2.py
+            └── └── visqol_config_pb2.py
 
 
 ## Running Inference with Custom Trained Model
