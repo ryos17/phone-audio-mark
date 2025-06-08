@@ -286,16 +286,55 @@ while IFS= read -r pkg; do
 done < requirements.txt
 ```
 
-To install ViSQOL
+### VisQOL Setup
+
+#### Install Bazelisk
+
 ```bash
-brew install bazel
-bazel build :visqol -c opt
+# macOS (Homebrew)
+brew install bazelisk
+
+# Verify that it picks the version in .bazelversion
+bazel version
 ```
 
-Export this variable to suppress downsampling warnings
+#### Clone the ViSQOL repository
 ```bash
-export GLOG_minloglevel=2
+git clone https://github.com/google/visqol.git
+cd visqol
 ```
+
+#### Point Bazel at your Python interpreter
+```bash
+export PYTHON_BIN_PATH="$(which python)"
+```
+
+#### Clean any previous outputs and build the required packages
+```bash
+bazel clean --expunge
+bazel build --action_env=PYTHON_BIN_PATH -c opt \
+    //python:visqol_lib_py.so \
+    //:similarity_result_py_pb2 \
+    //:visqol_config_py_pb2
+```
+
+#### Install using pip
+```bash
+pip install -e .
+```
+
+#### To create the correct folder structure that AudioMarkBench expects
+```bash
+cd <location_of_audiomarkbench>/AudioMarkBench/no-box
+
+# 1) Copy the built Python package
+cp -R ../../visqol/bazel-bin/python/visqol ./visqol
+
+# 2) Ensure init files exist
+touch visqol/__init__.py
+touch visqol/pb2/__init__.py
+```
+
 
 ## Running Inference with Custom Trained Model
 
