@@ -194,6 +194,36 @@ python utils/analyze_batch_train.py \
 - Use `--epoch-limits` to compare models trained for different numbers of epochs
 - When using `--epoch-limits`, make sure the number of limits matches the number of input files
 
+## Visqol Score Analysis
+
+The `utils/visqol_stats.py` script calculates statistics for Visqol scores from audio mark evaluation results.
+
+### Usage
+
+```bash
+python utils/visqol_stats.py <input_file>
+```
+
+### Example
+
+```bash
+python utils/visqol_stats.py eval_results/8khz_10hrs_125epochs.txt
+```
+
+### Output
+
+The script will display the following statistics for the Visqol scores:
+- Number of samples
+- Maximum score
+- Minimum score
+- Mean score
+- Median score
+- Standard deviation
+
+### Notes
+- The script automatically detects the Visqol score column (case-insensitive)
+- Values are truncated to 3 decimal places
+- Handles various error cases (file not found, empty file, invalid format)
 
 ## Training
 
