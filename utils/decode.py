@@ -3,7 +3,7 @@ import torch
 import torchaudio
 from audioseal import AudioSeal
 
-def decode_audio(input_path):
+def decode_audio(input_path, model_path="audioseal_detector_16bits"):
     # Load the audio file
     wav, sr = torchaudio.load(input_path)
     
@@ -17,7 +17,7 @@ def decode_audio(input_path):
     print(f"Audio shape: {wav.shape}")  # Should be (1, 1, samples)
     
     # Load the detector model
-    detector = AudioSeal.load_detector("audioseal_detector_16bits")
+    detector = AudioSeal.load_detector(model_path, nbits=16)
     
     # Detect watermark
     result, message = detector.detect_watermark(wav, sr)
@@ -30,10 +30,12 @@ def decode_audio(input_path):
 def main():
     parser = argparse.ArgumentParser(description='Detect watermark in audio file')
     parser.add_argument('input_path', type=str, help='Path to input audio file')
+    parser.add_argument('--model_path', type=str, default="audioseal_detector_16bits",
+                      help='Path to the AudioSeal detector model (default: audioseal_detector_16bits)')
     
     args = parser.parse_args()
     
-    decode_audio(args.input_path)
+    decode_audio(args.input_path, args.model_path)
 
 if __name__ == "__main__":
     main() 

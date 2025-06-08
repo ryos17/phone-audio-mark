@@ -75,11 +75,21 @@ Optional: Specify custom output path:
 python utils/encode.py --input_path path/to/audio.wav --output_path path/to/output.wav
 ```
 
+Optional: Use a custom model (default: "audioseal_wm_16bits"):
+```bash
+python utils/encode.py --input_path path/to/audio.wav --model_path path/to/custom/generator_model.pth
+```
+
 ### Detecting Watermark
 
 To detect watermark in an audio file:
 ```bash
 python utils/decode.py path/to/audio.wav
+```
+
+Optional: Specify a custom model path (default: "audioseal_detector_16bits"):
+```bash
+python utils/decode.py path/to/audio.wav --model_path path/to/custom/detector_model.pth
 ```
 
 The script will output:
@@ -390,7 +400,7 @@ python utils/encode.py \
 Check if the watermark was successfully embedded:
 
 ```bash
-python utils/decode.py output.wav
+python utils/decode.py output.wav --model_path model_outputs/checkpoint_detector_model_name.pth
 ```
 
 ## References
